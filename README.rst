@@ -16,7 +16,7 @@ The Router is WSGI application. It accespts other WSGI applications as route han
 
 .. code-block:: python
 
-    from acme.app.router import Router
+    from pyexpress.router import Router
     from webob import Response, exc
 
     # A function to handle a route. Routes are WSGI apps. the Router.app decorator wraps
