@@ -1,14 +1,27 @@
 =========
 PyExpress
 =========
-PyExpress is a minimal web application framework for Python 3 inpired by ExpressJS.
+PyExpress is a minimal web application framework for Python 3 inpired by ExpressJS. The project started as a part of a 
+task for a job application then continued as a way of exploring how web frameworks work on the inside.
 The code is based on this tutorial_.
 
 Install:
---------
+========
+Right now, the only way to use the framework is by cloning the source code. When it reaches a usable state, it will be
+Uploaded to PyPI
+
 .. code-block:: sh
 
-    pip install pyexpress
+    git clone https://github.com/iahvector/PyExpress.git
+    cd PyExpress
+    pip install .
+
+or you can use the `-e` to install the package in editable state
+
+.. code-block:: sh
+
+    pip install -e .
+
 
 Documentation:
 ==============
@@ -16,7 +29,7 @@ The Router is WSGI application. It accespts other WSGI applications as route han
 
 .. code-block:: python
 
-    from pyexpress.router import Router
+    from PyExpress.router import Router
     from webob import Response, exc
 
     # A function to handle a route. Routes are WSGI apps. the Router.app decorator wraps
