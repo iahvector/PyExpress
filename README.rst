@@ -16,7 +16,7 @@ Uploaded to PyPI
     cd PyExpress
     pip install .
 
-or you can use the `-e` to install the package in editable state
+or you can use the `-e` option to install the package in editable state
 
 .. code-block:: sh
 
