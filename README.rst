@@ -12,15 +12,13 @@ Uploaded to PyPI
 
 .. code-block:: sh
 
-    git clone https://github.com/iahvector/PyExpress.git
-    cd PyExpress
-    pip install .
+    pip install git+https://github.com/iahvector/PyExpress.git@0.1.0-alpha#egg=PyExpress
 
-or you can use the `-e` option to install the package in editable state
+or you can use the `-e` option to install the package in editable mode
 
 .. code-block:: sh
 
-    pip install -e .
+    pip install -e git+https://github.com/iahvector/PyExpress.git@0.1.0-alpha#egg=PyExpress
 
 
 Documentation:
