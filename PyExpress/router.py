@@ -81,6 +81,7 @@ class Router(object):
         regex = re.compile(self._parse_route(template))
         self.routes.append((regex, method, app, vars))
 
+    @staticmethod
     def app(func):
         """Decorates functions as WSGI apps"""
         def app_wrapper(environ, start_response):
