@@ -1,15 +1,14 @@
 language: python
-
 python:
-  - "3.3"
-  - "3.4"
-  - "3.5"
-  - "3.6"
-
-# command to install dependencies
+- '3.3'
+- '3.4'
+- '3.5'
+- '3.6'
 install:
-  - pip install .
-
-# command to run tests
+- pip install .
 script:
-  - python -m unittest discover tests/
+- python -m unittest discover tests/
+notifications:
+  slack:
+    rooms:
+        - secure: TLKsoPF2tn7xN9lqcxJA9un1w9uUvqjFBdLFthbya+EHNy2JVwksd/iRXgRftlBiXP5ZOQ5ZOAyQLPagLk+8xuRS8xMc5l7MgoF86giJFdA5yBnvctPrerF7avir9yiIr2jZ6GfTkV4RvGBhMWhk/UJpsyfzm1dX8KKWcELCIoLpENatQWJWJFEO/+LhLE+I0v0Cxv1YR7ieYDilVU0VFaisKAWwuC0kDkGJKsduM+PCxJM3ioUFu6zpELLkDtRdHgIc8VKYOgHYTEk8TJnbwrtVd3nzsfgF0cWXIVY0MmepA/gZBdDaiFbDuKQBUlItsbin75baGcsvi8Ve8sa3cEuQw38TtInFPnPmNYljz2iCOoK6Jfga8DKPjeN+GJXdK3ChE3VkpBxkECnwpDQDtIdOEhCGtvgcoJ1Grt1E1L45WNAGJaSoDkOlBCL4q1E7ALdvqe5WAmTExSAxYasVHptGLqUaKSUXtqaUGNovv+iJZ4E24N3TYLoqctJ0MlRcNOzL9KKOIj5D3GayxUfleOF9kXM+fMh8QrGHywyOVlwILpIGhpdCXBdXTrj00B16m7DZYfHyqk7zGg7W5Qe99fzjr8gTtNwDbNpVTl57FUQkivsexKLn937KaWmyDJ+pcm3Rn0+/GTyRxRpuGmsuXouwVlEHdZUsEVv0sjEgStU=
