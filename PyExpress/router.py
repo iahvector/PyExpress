@@ -13,6 +13,7 @@ class Router(object):
 
     CONTENT_TYPE_HEADER = 'Content-Type'
     CONTENT_TYPE_JSON = 'application/json'
+    CONTENT_TYPE_HTML = 'text/html'
 
     _ROUTE_TEMPLATE_REGEX = re.compile(r'\{(\w+)(?::([^}]+))?\}')
 
