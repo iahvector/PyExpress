@@ -22,7 +22,7 @@ class TestPyExpress(TestCase):
         self.assertIsInstance(res, Response)
         self.assertEqual(res.status, '200 OK')
         self.assertEqual(res.status_code, 200)
-        self.assertEqual(res.body, 'OK')
+        self.assertEqual(res.body, b'OK')
         self.assertEqual(res.charset, 'UTF-8')
         self.assertEqual(res.content_type, 'text/html')
 
@@ -40,7 +40,7 @@ class TestPyExpress(TestCase):
         self.assertIsInstance(res, Response)
         self.assertEqual(res.status, '200 OK')
         self.assertEqual(res.status_code, 200)
-        self.assertEqual(res.body, 'value')
+        self.assertEqual(res.body, b'value')
         self.assertEqual(res.charset, 'UTF-8')
         self.assertEqual(res.content_type, 'text/html')
 
@@ -59,7 +59,7 @@ class TestPyExpress(TestCase):
         self.assertIsInstance(res, Response)
         self.assertEqual(res.status, '200 OK')
         self.assertEqual(res.status_code, 200)
-        self.assertEqual(res.body, 'value')
+        self.assertEqual(res.body, b'value')
         self.assertEqual(res.charset, 'UTF-8')
         self.assertEqual(res.content_type, 'text/html')
 
