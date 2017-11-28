@@ -112,4 +112,7 @@ setup(
     #         'sample=sample:main',
     #     ],
     # },
+
+    # Set test suite package
+    test_suite='tests'
 )
