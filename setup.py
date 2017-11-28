@@ -88,7 +88,7 @@ setup(
     # for example:
     # $ pip install -e .[dev,test]
     extras_require={
-        'test': ['coverage'],
+        'test': ['tox', 'coverage'],
     },
 
     # If there are data files included in your packages that need to be
