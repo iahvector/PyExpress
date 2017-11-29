@@ -11,10 +11,6 @@ class Router(object):
     METHOD_DELETE = 'DELETE'
     METHODS = [METHOD_GET, METHOD_POST, METHOD_PUT, METHOD_DELETE]
 
-    CONTENT_TYPE_HEADER = 'Content-Type'
-    CONTENT_TYPE_JSON = 'application/json'
-    CONTENT_TYPE_HTML = 'text/html'
-
     _ROUTE_TEMPLATE_REGEX = re.compile(r'\{(\w+)(?::([^}]+))?\}')
 
     def __init__(self):

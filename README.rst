@@ -30,7 +30,7 @@ The Router is WSGI application. It accespts other WSGI applications as route han
 
 .. code-block:: python
 
-    from PyExpress.router import Router
+    from PyExpress import Router, CONTENT_TYPE_JSON
     from webob import Response, exc
 
     # A function to handle a route. Routes are WSGI apps. the Router.app decorator wraps
@@ -48,7 +48,7 @@ The Router is WSGI application. It accespts other WSGI applications as route han
                 'name': name
             }
             res_body = json.dumps(res_json)
-            return Response(body=res_body, content_type=Router.CONTENT_TYPE_JSON,
+            return Response(body=res_body, content_type=CONTENT_TYPE_JSON,
                             charset='UTF-8')
         else:
             return exc.HTTPNotFound()
