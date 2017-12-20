@@ -5,16 +5,36 @@ from webob import exc
 
 class Router(object):
     """A WSGI compatible router """
-    METHOD_GET = 'GET'
-    METHOD_POST = 'POST'
-    METHOD_PUT = 'PUT'
-    METHOD_DELETE = 'DELETE'
-    METHODS = [METHOD_GET, METHOD_POST, METHOD_PUT, METHOD_DELETE]
+
+    SUPPORTED_HTTP_METHODS = [
+        'CONNECT',
+        'DELETE',
+        'HEAD',
+        'GET',
+        'OPTIONS',
+        'PATCH',
+        'POST',
+        'PUT',
+        'TRACE',
+    ]
 
     _ROUTE_TEMPLATE_REGEX = re.compile(r'\{(\w+)(?::([^}]+))?\}')
 
     def __init__(self):
         self.routes = []
+        self.middleware = []
+
+    def __getattribute__(self, name):
+        # This? or `object.__getattribute__(self, name)`?
+        attr = super(Router, self)._getattr__(name)
+        if not attr:
+            namecaps = name.upper()
+            if namecaps == 'ALL' or namecaps in Router.SUPPORTED_HTTP_METHODS:
+                def add_method_route(self, method, path, handler, **kwargs):
+                    self._add_method_route(self, namecaps, path, handler,
+                                           **kwargs)
+                attr = add_method_route
+        return attr
 
     def _parse_route(self, template):
         """
@@ -34,7 +54,7 @@ class Router(object):
             last_pos = match.end()
         regex += re.escape(template[last_pos:])
         regex = '^{}$'.format(regex)
-        return regex
+        return re.compile(regex)
 
     def __call__(self, environ, start_response):
         """
@@ -46,36 +66,41 @@ class Router(object):
             start_response: (callable): The WSGI response callable
         """
         req = Request(environ)
-        for regex, method, app, vars in self.routes:
+        for regex, method, app, kwargs in self.routes:
             match = regex.match(req.path_info)
             if match and req.method == method:
                 req.urlvars = match.groupdict()
 
                 if hasattr(req, 'extras'):
-                    req.extras.update(vars)
+                    req.extras.update(kwargs)
                 else:
-                    req.extras = vars
+                    req.extras = kwargs
 
                 return app(environ, start_response)
 
         error = exc.HTTPNotFound()
         return error(environ, start_response)
 
-    def use(self, template, method, app, **vars):
+    def use(self, template, app, **kwargs):
         """
         Use WSGI application to handle a route
 
         Args:
             template: (str): A route template
-            method: (str): An HTTP method, one of 'GET', 'POST', 'PUT',
-                'DELETE'
             app: (callable): A WSGI application
-            **vars: (dict): Keyword arguments that will be passed to the app
+            **kwargs: (dict): Keyword arguments that will be passed to the app
         """
-        if method not in Router.METHODS:
-            raise ValueError('Method {} not supported'.format(method))
-        regex = re.compile(self._parse_route(template))
-        self.routes.append((regex, method, app, vars))
+        regex = self._parse_route(template)
+        self.middleware.append((regex, app, kwargs))
+
+    def _add_method_route(self, method, path, handler, **kwargs):
+        """
+        Args:
+            method: (str): An HTTP method, one of 'CONNECT', 'DELETE', 'HEAD',
+                'GET', 'OPTIONS', 'PATCH', 'POST', 'PUT', 'TRACE'
+        """
+        pass
+        # TODO Handle method call
 
     @staticmethod
     def app(func):
