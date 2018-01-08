@@ -4,17 +4,18 @@ from webob.response import Response
 from PyExpress import Router, CONTENT_TYPE_HTML
 
 
+# TODO: TEST HTTP methods other than get
+# TODO: Test Router.all()
 class TestPyExpress(TestCase):
     def setUp(self):
         self.app = Router()
 
     def test_simple_request(self):
+        @self.app.get('/')
         @Router.app
         def simple_request_handler(req):
             return Response(body='OK', content_type=CONTENT_TYPE_HTML,
                             charset='UTF-8')
-
-        self.app.use('/', Router.METHOD_GET, simple_request_handler)
 
         req = BaseRequest.blank('/')
         res = req.get_response(self.app)
@@ -27,12 +28,11 @@ class TestPyExpress(TestCase):
         self.assertEqual(res.content_type, 'text/html')
 
     def test_path_basic_variables(self):
+        @self.app.get('/{var}')
         @Router.app
         def path_basic_var_handler(req, var):
             return Response(body=var, content_type=CONTENT_TYPE_HTML,
                             charset='UTF-8')
-
-        self.app.use('/{var}', Router.METHOD_GET, path_basic_var_handler)
 
         req = BaseRequest.blank('/value')
         res = req.get_response(self.app)
@@ -45,13 +45,11 @@ class TestPyExpress(TestCase):
         self.assertEqual(res.content_type, 'text/html')
 
     def test_path_regex_variables(self):
+        @self.app.get('/{var:\w\w\w\w\w}')
         @Router.app
         def path_regex_var_handler(req, var):
             return Response(body=var, content_type=CONTENT_TYPE_HTML,
                             charset='UTF-8')
-
-        self.app.use('/{var:\w\w\w\w\w}', Router.METHOD_GET,
-                     path_regex_var_handler)
 
         req = BaseRequest.blank('/value')
         res = req.get_response(self.app)

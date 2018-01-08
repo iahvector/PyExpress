@@ -24,18 +24,6 @@ class Router(object):
         self.routes = []
         self.middleware = []
 
-    def __getattribute__(self, name):
-        # This? or `object.__getattribute__(self, name)`?
-        attr = super(Router, self)._getattr__(name)
-        if not attr:
-            namecaps = name.upper()
-            if namecaps == 'ALL' or namecaps in Router.SUPPORTED_HTTP_METHODS:
-                def add_method_route(self, method, path, handler, **kwargs):
-                    self._add_method_route(self, namecaps, path, handler,
-                                           **kwargs)
-                attr = add_method_route
-        return attr
-
     def _parse_route(self, template):
         """
         Takes a route template and parses it into regex
@@ -93,14 +81,28 @@ class Router(object):
         regex = self._parse_route(template)
         self.middleware.append((regex, app, kwargs))
 
-    def _add_method_route(self, method, path, handler, **kwargs):
+    def _route(self, http_method):
+        def __route(path, **kwargs):
+            def ___route(func):
+                regex = self._parse_route(path)
+                self.routes.append((regex, http_method, func, kwargs))
+            return ___route
+        return __route
+
+    def __getattr__(self, name):
+        namecaps = name.upper()
+        if namecaps == 'ALL' or namecaps in Router.SUPPORTED_HTTP_METHODS:
+            return self.route(namecaps)
+        else:
+            return None
+
+    def route(self, method, path, handler, **kwargs):
         """
         Args:
             method: (str): An HTTP method, one of 'CONNECT', 'DELETE', 'HEAD',
                 'GET', 'OPTIONS', 'PATCH', 'POST', 'PUT', 'TRACE'
         """
-        pass
-        # TODO Handle method call
+        return self._route(method)(path, kwargs)(handler)
 
     @staticmethod
     def app(func):
